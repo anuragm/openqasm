@@ -198,7 +198,7 @@ class QubitDeclaration(Statement):
     """
 
     qubit: Identifier
-    size: Optional[Expression] = None
+    size: Optional[Union[Expression, List[Expression]]] = None
 
 
 @dataclass
@@ -903,7 +903,7 @@ class QuantumArgument(QASMNode):
     """
 
     name: Identifier
-    size: Optional[Expression] = None
+    size: Optional[Union[Expression, List[Expression]]] = None
 
 
 @dataclass

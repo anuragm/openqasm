@@ -502,10 +502,18 @@ class QASMNodeVisitor(qasm3ParserVisitor):
     def visitQuantumDeclarationStatement(self, ctx: qasm3Parser.QuantumDeclarationStatementContext):
         if not self._in_global_scope():
             _raise_from_context(ctx, "qubit declarations must be global")
-        size_designator = ctx.qubitType().designator()
+        expr_list_maybe = ctx.qubitType().expressionList()
+        if expr_list_maybe:
+            size_expr = [
+                self.visit(expression) for expression in expr_list_maybe.expression()
+            ]
+        else:
+            size_expr = None
+        if size_expr and len(size_expr) == 1:
+            size_expr = size_expr[0]
         return ast.QubitDeclaration(
             qubit=_visit_identifier(ctx.Identifier()),
-            size=self.visit(size_designator) if size_designator is not None else None,
+            size=size_expr,
         )
 
     @span
@@ -825,10 +833,15 @@ class QASMNodeVisitor(qasm3ParserVisitor):
     @span
     def visitArgumentDefinition(self, ctx: qasm3Parser.ArgumentDefinitionContext):
         name = _visit_identifier(ctx.Identifier())
-        if ctx.qubitType() or ctx.QREG():
+        if ctx.QREG():
             designator = ctx.qubitType().designator() if ctx.qubitType() else ctx.designator()
             return ast.QuantumArgument(
                 name=name, size=self.visit(designator) if designator else None
+            )
+        if ctx.qubitType():
+            expressionList = ctx.qubitType().expressionList() if ctx.qubitType() else ctx.expressionList()
+            return ast.QuantumArgument(
+                name=name, size=self.visit(expressionList) if expressionList else None
             )
         access = None
         if ctx.CREG():

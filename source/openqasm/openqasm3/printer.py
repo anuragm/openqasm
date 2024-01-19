@@ -277,10 +277,9 @@ class Printer(QASMVisitor[PrinterState]):
     def visit_QubitDeclaration(self, node: ast.QubitDeclaration, context: PrinterState) -> None:
         self._start_line(context)
         self.stream.write("qubit")
-        if node.size is not None:
-            self.stream.write("[")
-            self.visit(node.size)
-            self.stream.write("]")
+        qubit_size = [node.size] if node.size and not isinstance(node.size, list) else node.size
+        if qubit_size is not None:
+            self._visit_sequence(qubit_size, context, start="[", end="]", separator=", ")
         self.stream.write(" ")
         self.visit(node.qubit, context)
         self._end_statement(context)
