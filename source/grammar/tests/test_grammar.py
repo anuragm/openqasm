@@ -1,11 +1,11 @@
-import itertools
 import os
 import pathlib
-from typing import List, Union, Sequence
+from typing import List, Sequence, Union
 
 import pytest
-import yaml
+import ruamel.yaml
 
+yaml = ruamel.yaml.YAML(typ="safe")
 import openqasm_reference_parser
 
 TEST_DIR = pathlib.Path(__file__).parent
@@ -104,7 +104,7 @@ def cases_from_lines(
 def test_reference_output(filename):
     """Test that the reference files parse to the exact expected output."""
     with open(filename, "r") as file:
-        obj = yaml.safe_load(file)
+        obj = yaml.load(file)
     # Make sure the YAML files have only the correct keys.
     assert set(obj) == {"reference", "source"}
     parsed = openqasm_reference_parser.pretty_tree(program=obj["source"])
