@@ -504,9 +504,7 @@ class QASMNodeVisitor(qasm3ParserVisitor):
             _raise_from_context(ctx, "qubit declarations must be global")
         expr_list_maybe = ctx.qubitType().expressionList()
         if expr_list_maybe:
-            size_expr = [
-                self.visit(expression) for expression in expr_list_maybe.expression()
-            ]
+            size_expr = [self.visit(expression) for expression in expr_list_maybe.expression()]
         else:
             size_expr = None
         if size_expr and len(size_expr) == 1:
@@ -839,7 +837,9 @@ class QASMNodeVisitor(qasm3ParserVisitor):
                 name=name, size=self.visit(designator) if designator else None
             )
         if ctx.qubitType():
-            expressionList = ctx.qubitType().expressionList() if ctx.qubitType() else ctx.expressionList()
+            expressionList = (
+                ctx.qubitType().expressionList() if ctx.qubitType() else ctx.expressionList()
+            )
             return ast.QuantumArgument(
                 name=name, size=self.visit(expressionList) if expressionList else None
             )
