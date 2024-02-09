@@ -144,11 +144,11 @@ reference: |
         quantumDeclarationStatement
           qubitType
             qubit
-            designator
-              [
+            [
+            expressionList
               expression
                 6
-              ]
+            ]
           q1
           ;
     statementOrScope

@@ -35,11 +35,11 @@ reference: |
             argumentDefinition
               qubitType
                 qubit
-                designator
-                  [
+                [
+                expressionList
                   expression
                     2
-                  ]
+                ]
               q1
             ,
             argumentDefinition

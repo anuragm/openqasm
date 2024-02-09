@@ -203,7 +203,7 @@ scalarType:
     | STRETCH
     | COMPLEX (LBRACKET scalarType RBRACKET)?
 ;
-qubitType: QUBIT designator?;
+qubitType: QUBIT (LBRACKET expressionList RBRACKET)?;
 arrayType: ARRAY LBRACKET scalarType COMMA expressionList RBRACKET;
 arrayReferenceType: (READONLY | MUTABLE) ARRAY LBRACKET scalarType COMMA (expressionList | DIM EQUALS expression) RBRACKET;
 

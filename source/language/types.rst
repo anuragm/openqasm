@@ -63,15 +63,15 @@ There is a quantum bit (``qubit``) type that is interpreted as a reference to a
 two-level subsystem of a quantum state. The statement ``qubit name;``
 declares a reference to a quantum bit. These qubits are referred
 to as "virtual qubits" (in distinction to "physical qubits" on
-actual hardware; see below). The statement ``qubit[size] name;``
-declares a quantum register with ``size`` qubits.
+actual hardware; see below). The statement
+``qubit[size1, size2, ..., sizeN] name;`` declares a quantum register with
+``size1 * size2 * ... * sizeN`` qubits.
 Sizes must always be :ref:`compile-time constant <const-expression>` positive
-integers.
-Quantum registers are static arrays of qubits
-that cannot be dynamically resized.
+integers. Quantum registers are static arrays of qubits that cannot be dynamically
+resized.
 
-The label ``name[j]`` refers to a qubit of this register, where
-:math:`j\in \{0,1,\dots,\mathrm{size}(\mathrm{name})-1\}` is an integer.
+The label ``name[j1, j2, ...]`` refers to a qubit of this register, where
+:math:`j_i\in \{0,1,\dots,\mathrm{size_i}\}` and so on is an integer.
 
 .. note::
 
@@ -105,7 +105,8 @@ The label ``name[j]`` refers to a qubit of this register, where
 
 
 The keyword ``qreg`` is included
-for backwards compatibility and will be removed in the future.
+for backwards compatibility and will be removed in the future. ``qreg`` keyword does
+not allow for multidimensional qubit registers.
 
 Qubits are initially in an undefined state. A quantum ``reset`` operation is one
 way to initialize qubit states.
@@ -124,6 +125,8 @@ the quantum memory.
    qubit γ;
    // Declare a qubit register with 20 qubits
    qubit[20] qubit_array;
+   // Declare a qubit register with 5x5=25 qubits.
+   qubit[5, 5] data_qubits;
 
 .. _physical-qubits:
 
